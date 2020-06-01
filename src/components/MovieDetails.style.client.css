@@ -1,0 +1,22 @@
+.wbdv-movie-poster {
+  width: 100%
+}
+
+.wbdv-movie-poster-search {
+  width: 40%
+}
+
+.details-container {
+  display: flex;
+  flex-direction: column;
+  /*justify-content: space-between;*/
+}
+
+.wbdv-genre-runtime {
+  display: flex;
+  flex-direction: column;
+}
+
+.wbdv-movie-plot {
+  margin-top: auto;
+}
