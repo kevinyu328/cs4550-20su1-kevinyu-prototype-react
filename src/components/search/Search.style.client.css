@@ -1,0 +1,26 @@
+wbdv-movie-poster-search {
+  width: 18%
+}
+
+
+.wbdv-search-result-poster-title-year {
+  display: flex;
+  align-items: center;
+}
+
+
+.wbdv-search-result-title-year {
+  margin-left: 25px;
+}
+
+
+.wbdv-search-bar-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wbdv-search-btn {
+  margin-top: 12px;
+  width: 7 rem;
+}

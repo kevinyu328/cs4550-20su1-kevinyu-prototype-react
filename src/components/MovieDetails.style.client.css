@@ -2,10 +2,6 @@
   width: 100%
 }
 
-.wbdv-movie-poster-search {
-  width: 40%
-}
-
 .details-container {
   display: flex;
   flex-direction: column;
@@ -17,6 +13,9 @@
   flex-direction: column;
 }
 
-.wbdv-movie-plot {
+.wbdv-details-add-to-fav-btn {
   margin-top: auto;
+  width: 30rem;
+  align-self: center;
+  height: 3rem;
 }

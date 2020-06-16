@@ -51,21 +51,24 @@ export default class MovieDetails extends React.Component {
 
               </div>
 
-              <div className="wbdv-movie-ratings">
-                {/*{console.log(this.state.details.Ratings)}*/}
-
+              <div className="wbdv-movie-ratings mt-3">
                 <ul className="list-group">
                   {this.state.details !== '' ? (this.state.details.Ratings.map((item, index) => (
-                      <li className='list-group-item'>{item.Source}: {item.Value}</li>
+                      <li key={item.Source}
+                          className='list-group-item'>{item.Source}: {item.Value}</li>
                   ))) : ''}
                 </ul>
               </div>
 
-              <div className='wbdv-movie-plot'>
-                {/*<p>*/}
+              <div className='wbdv-movie-plot mt-4'>
+                <p>
                   {this.state.details.Plot}
-                {/*</p>*/}
+                </p>
               </div>
+
+              <button className='btn btn-danger wbdv-details-add-to-fav-btn'>
+                Add to favorites
+              </button>
 
             </div>
 

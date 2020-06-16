@@ -1,0 +1,28 @@
+.wbdv-home-content {
+  padding-top: 90px;
+}
+
+
+.wbdv-nav-login-signup {
+  flex-direction: row;
+}
+
+.wbdv-nav-signup {
+  margin-right: 10px;
+}
+
+
+.wbdv-home-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.wbdv-home-website-description {
+  width: 55%;
+  text-align: center;
+}
+
+.wbdv-home-popular-movies {
+  margin-top: 75px;
+}
