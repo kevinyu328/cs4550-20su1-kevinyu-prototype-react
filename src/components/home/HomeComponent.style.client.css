@@ -26,3 +26,31 @@
 .wbdv-home-popular-movies {
   margin-top: 75px;
 }
+
+.wbdv-home-filter-search {
+  display: flex;
+  flex-direction: column;
+  margin-top: 75px;
+}
+
+
+.wbdv-provider-checkbox {
+  display: flex;
+  flex-direction: column;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

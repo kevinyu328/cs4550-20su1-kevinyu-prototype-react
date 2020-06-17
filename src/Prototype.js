@@ -6,6 +6,7 @@ import HomeComponent from "./components/home/HomeComponent"
 import LoginComponent from "./components/login/LoginComponent";
 import RegisterComponent from "./components/register/RegisterComponent";
 import SearchResultComponent from "./components/search/SearchResultComponent";
+import FilterSearchComponent from "./services/FilterSearchComponent";
 
 
 export default class Prototype extends React.Component {
@@ -29,6 +30,11 @@ export default class Prototype extends React.Component {
             {/*<Route exact*/}
             {/*       path="/search"*/}
             {/*       component={SearchContainer}/>*/}
+
+            <Route exact
+                   path="/search/filter"
+                   component={FilterSearchComponent}/>
+
 
             <Route exact
                    path="/search/:criteria"

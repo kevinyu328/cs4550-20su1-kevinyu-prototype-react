@@ -22,5 +22,37 @@ wbdv-movie-poster-search {
 
 .wbdv-search-btn {
   margin-top: 12px;
-  width: 7 rem;
+  width: 7rem;
 }
+
+
+.wbdv-search-field-and-btn {
+  display: flex;
+}
+
+
+.wbdv-nav-search-field {
+  width: 500px;
+  margin-left: 100px;
+}
+
+
+
+.wbdv-nav-brand-search-field {
+  display: flex;
+}
+
+
+.wbdv-search-results {
+  margin-top: 75px;
+}
+
+
+
+
+
+
+
+
+
+

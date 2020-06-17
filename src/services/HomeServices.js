@@ -7,3 +7,15 @@ export const getNewNetflixReleaseInUs = () =>
       }
     })
     .then(response => response.json())
+
+
+export const searchByFilters = (providers, genres) =>
+  fetch(`https://ivaee-internet-video-archive-entertainment-v1.p.rapidapi.com/entertainment/search/?Genres=${genres}&SortBy=IvaRating&ProgramTypes=Movie&Providers=${providers}`, {
+    "method": "GET",
+    "headers": {
+      "x-rapidapi-host": "ivaee-internet-video-archive-entertainment-v1.p.rapidapi.com",
+      "x-rapidapi-key": "d2b55fe19amshd7df61860c411c2p17fb05jsnf3a4336143f5",
+      "content-type": "application/json"
+    }
+  })
+    .then(response => response.json())
