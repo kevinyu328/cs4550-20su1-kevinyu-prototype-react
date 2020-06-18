@@ -10,6 +10,8 @@ import FilterSearchComponent from "./components/search/FilterSearchComponent";
 import ProfileComponent from "./components/profile/ProfileComponent";
 import DiscussionForumComponent
   from "./components/forum/DiscussionForumComponent";
+import EditProfileComponent from "./components/profile/EditProfileComponent";
+import AnonProfileComponent from "./components/profile/AnonProfileComponent";
 
 
 export default class Prototype extends React.Component {
@@ -52,6 +54,14 @@ export default class Prototype extends React.Component {
             <Route exact
                    path="/profile"
                    component={ProfileComponent}/>
+
+            <Route exact
+                   path="/profile/:username"
+                   component={AnonProfileComponent}/>
+
+            <Route exact
+                   path="/profileEdit"
+                   component={EditProfileComponent}/>
 
 
             <Route exact

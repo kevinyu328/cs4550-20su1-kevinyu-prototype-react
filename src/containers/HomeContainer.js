@@ -4,17 +4,51 @@ import {Link} from "react-router-dom";
 import SearchContainer from "./SearchContainer";
 import {getNewNetflixReleaseInUs, searchByFilters} from "../services/HomeServices";
 import FilterSearchComponent from "../components/search/FilterSearchComponent";
+import {checkLogin} from "../services/UserServices";
 
 class HomeContainer extends React.Component {
   state = {
     newNetflixReleaseInUS: [],
+    user: null,
   }
 
 
 
-  // componentDidMount() {
+  componentDidMount() {
   //   getNewNetflixReleaseInUs().then(movies => this.setState({newNetflixReleaseInUS: movies.ITEMS}))
+
+    checkLogin()
+    .catch(e => {this.props.history.push("/")})
+    .then(user => {
+      if(user)
+        this.setState({
+          user: user
+        })
+    })
+
+  }
+
+
+  //
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   if(prevState.user !== this.state.user) {
+  //
+  //   }
   // }
+
+
+  logout = () => {
+    fetch("http://localhost:8080/api/logout", {
+      method: 'POST',
+      credentials: "include"
+    })
+    .then(response => {
+      this.setState({
+        user: null
+      })
+      this.props.history.push("/")
+    })
+  }
 
 
 
@@ -24,33 +58,68 @@ class HomeContainer extends React.Component {
     return (
         <div className='container'>
 
-          <nav className="navbar fixed-top navbar-light bg-light">
+          {
+            this.state.user &&
+            <nav className="navbar fixed-top navbar-light bg-light">
 
-            <Link to={"/"} className="navbar-brand">
-              What Movie Should I Watch Next?
-            </Link>
+              <Link to={"/"} className="navbar-brand">
+                What Movie Should I Watch Next?
+              </Link>
 
-            <div>
-              <ul className='navbar-nav wbdv-nav-login-signup'>
-                <li className='wbdv-nav-signup nav-item'>
-                  <Link to={'/register'}>
-                    <button className='btn btn-outline-success'>
-                      Sign up
+              <div>
+                <ul className='navbar-nav wbdv-nav-login-signup'>
+                  <li className='wbdv-nav-signup nav-item'>
+                    <Link to={'/profile'}>
+                      <button className='btn btn-outline-success'>
+                        My profile
+                      </button>
+                    </Link>
+                  </li>
+
+                  <li className='nav-item'>
+                    <button onClick={this.logout}
+                            className='btn btn-danger'>
+                      Log out
                     </button>
-                  </Link>
-                </li>
+                  </li>
 
-                <li className='nav-item'>
-                  <Link to={'/login'}>
-                    <button className='btn btn-warning'>
-                      Log in
-                    </button>
-                  </Link>
-                </li>
+                </ul>
+              </div>
+            </nav>
+          }
 
-              </ul>
-            </div>
-          </nav>
+          {
+            !this.state.user &&
+            <nav className="navbar fixed-top navbar-light bg-light">
+
+              <Link to={"/"} className="navbar-brand">
+                What Movie Should I Watch Next?
+              </Link>
+
+              <div>
+                <ul className='navbar-nav wbdv-nav-login-signup'>
+                  <li className='wbdv-nav-signup nav-item'>
+                    <Link to={'/register'}>
+                      <button className='btn btn-outline-success'>
+                        Sign up
+                      </button>
+                    </Link>
+                  </li>
+
+                  <li className='nav-item'>
+                    <Link to={'/login'}>
+                      <button className='btn btn-warning'>
+                        Log in
+                      </button>
+                    </Link>
+                  </li>
+
+                </ul>
+              </div>
+            </nav>
+          }
+
+
 
 
 

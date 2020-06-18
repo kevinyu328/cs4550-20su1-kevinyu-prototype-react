@@ -5,6 +5,7 @@ import {Link} from "react-router-dom";
 // import "./Search.style.client.css"
 import SearchServices from "../../services/SearchServices";
 import FilterSearchResults from "./FilterSearchResults";
+import {checkLogin} from "../../services/UserServices";
 
 
 export default class FilterSearchComponent extends React.Component {
@@ -23,13 +24,29 @@ export default class FilterSearchComponent extends React.Component {
     providers: [],
     genres: [],
     filterSearchResults: [],
+    user: null,
   }
 
 
-  // componentDidMount() {
-  //   SearchServices.getImdbIdByTitleYear(this.props.movie.Source.Title, this.props.movie.Source.Year)
-  //     .then(response => this.setState({movieFromOmdb: response}))
-  // }
+  componentDidMount() {
+    checkLogin()
+    .catch(e => {this.props.history.push("/")})
+    .then(user => {
+      if(user)
+        this.setState({
+          user: user
+        })
+    })
+  }
+
+  logout = () => {
+    fetch("http://localhost:8080/api/logout", {
+      method: 'POST',
+      credentials: "include"
+    })
+    .then(response => this.props.history.push("/"))
+
+  }
 
   populateSearch = () => {
     if(this.state.netflixChecked) {
@@ -92,46 +109,29 @@ export default class FilterSearchComponent extends React.Component {
       searchByFilters(providers, genres)
       .then(response => this.setState({filterSearchResults: response.Hits}))
 
-  // constructor(props) {
-  //   super(props);
-  //
-  //
-  //   SearchServices.getImdbIdByTitleYear(this.props.movie.Source.Title, this.props.movie.Source.Year)
-  //     .then(response =>
-  //             // console.log(response.imdbID)
-  //         this.state = {
-  //       hi: 'hi',
-  //       imdbId: response.imdbID
+
+
+  // componentDidUpdate(prevProps, prevState, snapshot) {
+  //   if(prevProps.movie !== this.props.movie) {
+  //     // console.log('hi')
+  //     // this.setState({movieFromOmdb: this.props.movies})
+  //     this.componentDidMount()
   //   }
-  //   )
-  //
-  //   // this.state= {
-  //   //
-  //   // }
-  //
   // }
-
-
-  componentDidUpdate(prevProps, prevState, snapshot) {
-    if(prevProps.movie !== this.props.movie) {
-      // console.log('hi')
-      // this.setState({movieFromOmdb: this.props.movies})
-      this.componentDidMount()
-    }
-  }
 
   render() {
     return (
         <div className='wbdv-home-filter-search container'>
-          <nav className="navbar fixed-top navbar-light bg-light">
 
-            <div className='wbdv-nav-brand-search-field'>
+          {
+            this.state.user &&
+            <nav className="navbar fixed-top navbar-light bg-light">
+
               <Link to={"/"} className="navbar-brand">
                 What Movie Should I Watch Next?
               </Link>
 
 
-              {/*<form className="form-inline">*/}
               <div className='wbdv-search-field-and-btn'>
                 <input  className="wbdv-nav-search-field form-control mr-sm-2"
                         type="search"
@@ -151,31 +151,79 @@ export default class FilterSearchComponent extends React.Component {
                 </Link>
 
               </div>
-            </div>
 
-            {/*</form>*/}
+              <div>
+                <ul className='navbar-nav wbdv-nav-login-signup'>
+                  <li className='wbdv-nav-signup nav-item'>
+                    <Link to={'/profile'}>
+                      <button className='btn btn-outline-success'>
+                        My profile
+                      </button>
+                    </Link>
+                  </li>
 
-            <div>
-              <ul className='navbar-nav wbdv-nav-login-signup'>
-                <li className='wbdv-nav-signup nav-item'>
-                  <Link to={'/register'}>
-                    <button className='btn btn-outline-success'>
-                      Sign up
+                  <li className='nav-item'>
+                    <button onClick={this.logout}
+                            className='btn btn-danger'>
+                      Log out
                     </button>
-                  </Link>
-                </li>
+                  </li>
 
-                <li className='nav-item'>
-                  <Link to={'/login'}>
-                    <button className='btn btn-warning'>
-                      Log in
-                    </button>
-                  </Link>
-                </li>
+                </ul>
+              </div>
+            </nav>
+          }
 
-              </ul>
-            </div>
-          </nav>
+          {
+            !this.state.user &&
+            <nav className="navbar fixed-top navbar-light bg-light">
+
+              <Link to={"/"} className="navbar-brand">
+                What Movie Should I Watch Next?
+              </Link>
+
+              <div className='wbdv-search-field-and-btn'>
+                <input  className="wbdv-nav-search-field form-control mr-sm-2"
+                        type="search"
+                        placeholder="Search For a Movie Title"
+                        aria-label="Search"
+                        title="Search for a movie here"
+                        value={this.state.query}
+                        onChange={(event) => this.setState({
+                          query: event.target.value
+                        })}/>
+                <Link to={`/search/${this.state.query}`}>
+                  <button className="btn btn-danger my-2 my-sm-0"
+                          type="submit">
+                    Search
+                    {/*<i className="fa fa-plus"/>*/}
+                  </button>
+                </Link>
+
+              </div>
+
+              <div>
+                <ul className='navbar-nav wbdv-nav-login-signup'>
+                  <li className='wbdv-nav-signup nav-item'>
+                    <Link to={'/register'}>
+                      <button className='btn btn-outline-success'>
+                        Sign up
+                      </button>
+                    </Link>
+                  </li>
+
+                  <li className='nav-item'>
+                    <Link to={'/login'}>
+                      <button className='btn btn-warning'>
+                        Log in
+                      </button>
+                    </Link>
+                  </li>
+
+                </ul>
+              </div>
+            </nav>
+          }
 
           <h3>Search Through These Filters:</h3>
 

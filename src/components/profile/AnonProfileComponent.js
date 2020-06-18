@@ -1,9 +1,9 @@
 import React from "react";
 import "./Profile.style.client.css"
 import {Link} from "react-router-dom";
-import {checkLogin} from "../../services/UserServices";
+import {checkLogin, getUserByUsername} from "../../services/UserServices";
 
-export default class ProfileComponent extends React.Component {
+export default class AnonProfileComponent extends React.Component {
   state = {
     query: '',
     user: {
@@ -16,18 +16,22 @@ export default class ProfileComponent extends React.Component {
   }
 
   componentDidMount() {
-    checkLogin()
-    .catch(e => {this.props.history.push("/")})
-    .then(user => {
-      if(user)
-        this.setState({
-          user: user
-        })
-    })
+    // checkLogin()
+    // .catch(e => {this.props.history.push("/")})
+    // .then(user => {
+    //   if(user)
+    //     this.setState({
+    //       user: user
+    //     })
+    // })
 
-
-
+    console.log(this.props.match)
+    getUserByUsername(this.props.match.params.username)
+      .then(response => this.setState({
+        user: response
+      }))
   }
+
 
   logout = () => {
     fetch("http://localhost:8080/api/logout", {
@@ -94,15 +98,15 @@ export default class ProfileComponent extends React.Component {
                   Personal Info
                   <ul>
                     <li>Username: {this.state.user.username}</li>
-                    <li>Password: {this.state.user.password}</li>
+                    <li>Password: *****</li>
                     <li>Email: {this.state.user.email}</li>
-                    <li>Phone: {this.state.user.phone}</li>
+                    <li>Phone: (XXX) XXX-XXXX</li>
                     {/*<li>Date of Birth</li>*/}
                   </ul>
 
-                  <Link to={'/profileEdit'}>
-                    <button>Edit Info</button>
-                  </Link>
+                  {/*<Link to={'/profileEdit'}>*/}
+                  {/*  <button>Edit Info</button>*/}
+                  {/*</Link>*/}
 
                 </div>
 
