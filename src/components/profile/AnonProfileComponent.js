@@ -6,29 +6,29 @@ import {checkLogin, getUserByUsername} from "../../services/UserServices";
 export default class AnonProfileComponent extends React.Component {
   state = {
     query: '',
-    user: {
+    profileUser: {
       username: '',
       password: '',
       email: '',
       phone: '',
       // sections: []
     },
+    user: null,
   }
 
   componentDidMount() {
-    // checkLogin()
-    // .catch(e => {this.props.history.push("/")})
-    // .then(user => {
-    //   if(user)
-    //     this.setState({
-    //       user: user
-    //     })
-    // })
+    checkLogin()
+    .catch(e => '')
+    .then(user => {
+      if(user)
+        this.setState({
+          user: user
+        })
+    })
 
-    console.log(this.props.match)
     getUserByUsername(this.props.match.params.username)
       .then(response => this.setState({
-        user: response
+        profileUser: response
       }))
   }
 
@@ -46,44 +46,107 @@ export default class AnonProfileComponent extends React.Component {
     return (
         <div className='container wbdv-profile-container'>
 
-          <nav className="navbar fixed-top navbar-light bg-light">
+          {
+            this.state.user &&
+            <nav className="navbar fixed-top navbar-light bg-light">
 
-            <Link to={"/"} className="navbar-brand">
-              What Movie Should I Watch Next?
-            </Link>
-
-            <div className='wbdv-search-field-and-btn'>
-              <input  className="wbdv-nav-search-field form-control mr-sm-2"
-                      type="search"
-                      placeholder="Search For a Movie Title"
-                      aria-label="Search"
-                      title="Search for a movie here"
-                      value={this.state.query}
-                      onChange={(event) => this.setState({
-                        query: event.target.value
-                      })}/>
-              <Link to={`/search/${this.state.query}`}>
-                <button className="btn btn-danger my-2 my-sm-0"
-                        type="submit">
-                  Search
-                  {/*<i className="fa fa-plus"/>*/}
-                </button>
+              <Link to={"/"} className="navbar-brand">
+                What Movie Should I Watch Next?
               </Link>
 
-            </div>
 
-            <div>
-              <ul className='navbar-nav wbdv-nav-login-signup'>
-                <li className='nav-item'>
-                  <button onClick={this.logout}
-                          className='btn btn-danger'>
-                    Log out
+              <div className='wbdv-search-field-and-btn'>
+                <input  className="wbdv-nav-search-field form-control mr-sm-2"
+                        type="search"
+                        placeholder="Search For a Movie Title"
+                        aria-label="Search"
+                        title="Search for a movie here"
+                        value={this.state.query}
+                        onChange={(event) => this.setState({
+                          query: event.target.value
+                        })}/>
+                <Link to={`/search/${this.state.query}`}>
+                  <button className="btn btn-danger my-2 my-sm-0"
+                          type="submit">
+                    Search
+                    {/*<i className="fa fa-plus"/>*/}
                   </button>
-                </li>
+                </Link>
 
-              </ul>
-            </div>
-          </nav>
+              </div>
+
+              <div>
+                <ul className='navbar-nav wbdv-nav-login-signup'>
+                  <li className='wbdv-nav-signup nav-item'>
+                    <Link to={'/profile'}>
+                      <button className='btn btn-outline-success'>
+                        My profile
+                      </button>
+                    </Link>
+                  </li>
+
+                  <li className='nav-item'>
+                    <button onClick={this.logout}
+                            className='btn btn-danger'>
+                      Log out
+                    </button>
+                  </li>
+
+                </ul>
+              </div>
+            </nav>
+          }
+
+          {
+            !this.state.user &&
+            <nav className="navbar fixed-top navbar-light bg-light">
+
+              <Link to={"/"} className="navbar-brand">
+                What Movie Should I Watch Next?
+              </Link>
+
+              <div className='wbdv-search-field-and-btn'>
+                <input  className="wbdv-nav-search-field form-control mr-sm-2"
+                        type="search"
+                        placeholder="Search For a Movie Title"
+                        aria-label="Search"
+                        title="Search for a movie here"
+                        value={this.state.query}
+                        onChange={(event) => this.setState({
+                          query: event.target.value
+                        })}/>
+                <Link to={`/search/${this.state.query}`}>
+                  <button className="btn btn-danger my-2 my-sm-0"
+                          type="submit">
+                    Search
+                    {/*<i className="fa fa-plus"/>*/}
+                  </button>
+                </Link>
+
+              </div>
+
+              <div>
+                <ul className='navbar-nav wbdv-nav-login-signup'>
+                  <li className='wbdv-nav-signup nav-item'>
+                    <Link to={'/register'}>
+                      <button className='btn btn-outline-success'>
+                        Sign up
+                      </button>
+                    </Link>
+                  </li>
+
+                  <li className='nav-item'>
+                    <Link to={'/login'}>
+                      <button className='btn btn-warning'>
+                        Log in
+                      </button>
+                    </Link>
+                  </li>
+
+                </ul>
+              </div>
+            </nav>
+          }
 
 
             <h2>Profile</h2>
@@ -97,9 +160,9 @@ export default class AnonProfileComponent extends React.Component {
                 <div className='wbdv-profile-personal-info'>
                   Personal Info
                   <ul>
-                    <li>Username: {this.state.user.username}</li>
+                    <li>Username: {this.state.profileUser.username}</li>
                     <li>Password: *****</li>
-                    <li>Email: {this.state.user.email}</li>
+                    <li>Email: {this.state.profileUser.email}</li>
                     <li>Phone: (XXX) XXX-XXXX</li>
                     {/*<li>Date of Birth</li>*/}
                   </ul>

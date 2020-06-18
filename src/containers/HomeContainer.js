@@ -15,7 +15,7 @@ class HomeContainer extends React.Component {
 
 
   componentDidMount() {
-  //   getNewNetflixReleaseInUs().then(movies => this.setState({newNetflixReleaseInUS: movies.ITEMS}))
+    // getNewNetflixReleaseInUs().then(movies => this.setState({newNetflixReleaseInUS: movies.ITEMS}))
 
     checkLogin()
     .catch(e => {this.props.history.push("/")})
@@ -29,12 +29,7 @@ class HomeContainer extends React.Component {
   }
 
 
-  //
-  // componentDidUpdate(prevProps, prevState, snapshot) {
-  //   if(prevState.user !== this.state.user) {
-  //
-  //   }
-  // }
+
 
 
   logout = () => {

@@ -1,18 +1,26 @@
 import React from "react";
 import SearchServices from "../services/SearchServices"
 import "./MovieDetails.style.client.css"
+import {checkLogin} from "../services/UserServices";
+import {Link, Redirect} from "react-router-dom";
 
 
 export default class MovieDetails extends React.Component {
   state = {
     details: '',
+    user: null,
+    query: '',
   }
 
   componentDidMount() {
-    // SearchServices.searchByImdbID(this.props.match.params.imdbID)
-    //   .then(details => this.setState({
-    //     details: details
-    // }))
+    checkLogin()
+    .catch(e => '')
+    .then(user => {
+      if(user)
+        this.setState({
+          user: user
+        })
+    })
 
     this.getMovieDetails(this.props.match.params.imdbID)
   }
@@ -24,10 +32,134 @@ export default class MovieDetails extends React.Component {
         }))
 
 
+  logout = () => {
+    fetch("http://localhost:8080/api/logout", {
+      method: 'POST',
+      credentials: "include"
+    })
+    .then(response => this.props.history.push("/"))
+
+  }
+
+
+  addToFavorites = (movieId) => {
+    if(!this.state.user) {
+      alert('Please log in to add a movie to your favorites list')
+      this.props.history.push("/register")
+    } else {
+      console.log("don't need to log in")
+    }
+  }
+
+
+
 
   render() {
     return (
-        <div className='container'>
+        <div className='container wbdv-movie-details-container'>
+
+          {
+            this.state.user &&
+            <nav className="navbar fixed-top navbar-light bg-light">
+
+              <Link to={"/"} className="navbar-brand">
+                What Movie Should I Watch Next?
+              </Link>
+
+
+              <div className='wbdv-search-field-and-btn'>
+                <input  className="wbdv-nav-search-field form-control mr-sm-2"
+                        type="search"
+                        placeholder="Search For a Movie Title"
+                        aria-label="Search"
+                        title="Search for a movie here"
+                        value={this.state.query}
+                        onChange={(event) => this.setState({
+                          query: event.target.value
+                        })}/>
+                <Link to={`/search/${this.state.query}`}>
+                  <button className="btn btn-danger my-2 my-sm-0"
+                          type="submit">
+                    Search
+                    {/*<i className="fa fa-plus"/>*/}
+                  </button>
+                </Link>
+
+              </div>
+
+              <div>
+                <ul className='navbar-nav wbdv-nav-login-signup'>
+                  <li className='wbdv-nav-signup nav-item'>
+                    <Link to={'/profile'}>
+                      <button className='btn btn-outline-success'>
+                        My profile
+                      </button>
+                    </Link>
+                  </li>
+
+                  <li className='nav-item'>
+                    <button onClick={this.logout}
+                            className='btn btn-danger'>
+                      Log out
+                    </button>
+                  </li>
+
+                </ul>
+              </div>
+            </nav>
+          }
+
+          {
+            !this.state.user &&
+            <nav className="navbar fixed-top navbar-light bg-light">
+
+              <Link to={"/"} className="navbar-brand">
+                What Movie Should I Watch Next?
+              </Link>
+
+              <div className='wbdv-search-field-and-btn'>
+                <input  className="wbdv-nav-search-field form-control mr-sm-2"
+                        type="search"
+                        placeholder="Search For a Movie Title"
+                        aria-label="Search"
+                        title="Search for a movie here"
+                        value={this.state.query}
+                        onChange={(event) => this.setState({
+                          query: event.target.value
+                        })}/>
+                <Link to={`/search/${this.state.query}`}>
+                  <button className="btn btn-danger my-2 my-sm-0"
+                          type="submit">
+                    Search
+                    {/*<i className="fa fa-plus"/>*/}
+                  </button>
+                </Link>
+
+              </div>
+
+              <div>
+                <ul className='navbar-nav wbdv-nav-login-signup'>
+                  <li className='wbdv-nav-signup nav-item'>
+                    <Link to={'/register'}>
+                      <button className='btn btn-outline-success'>
+                        Sign up
+                      </button>
+                    </Link>
+                  </li>
+
+                  <li className='nav-item'>
+                    <Link to={'/login'}>
+                      <button className='btn btn-warning'>
+                        Log in
+                      </button>
+                    </Link>
+                  </li>
+
+                </ul>
+              </div>
+            </nav>
+          }
+
           <h3>Movie Details</h3>
 
           <div className='row justify-content-center'>
@@ -66,7 +198,8 @@ export default class MovieDetails extends React.Component {
                 </p>
               </div>
 
-              <button className='btn btn-danger wbdv-details-add-to-fav-btn'>
+              <button onClick={() => this.addToFavorites(this.props.match.params.imdbID)}
+                      className='btn btn-danger wbdv-details-add-to-fav-btn'>
                 Add to favorites
               </button>
 

@@ -30,7 +30,7 @@ export default class FilterSearchComponent extends React.Component {
 
   componentDidMount() {
     checkLogin()
-    .catch(e => {this.props.history.push("/")})
+    .catch(e => '')
     .then(user => {
       if(user)
         this.setState({

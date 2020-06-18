@@ -1,6 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
 import {checkLogin} from "../../services/UserServices";
+import {findFavoriteMoviesForUser} from "../../services/MovieServices";
 
 export default class EditProfileComponent extends React.Component {
   state = {
