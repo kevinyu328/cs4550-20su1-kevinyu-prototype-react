@@ -34,23 +34,52 @@
 }
 
 
-.wbdv-provider-checkbox {
+.wbdv-provider-checkbox, .wbdv-genre-checkbox {
   display: flex;
   flex-direction: column;
+}
+
+
+.wbdv-submit-filter-btn {
+  /*width: 100px;*/
+}
+
+
+.wbdv-filter-result-grid {
+  margin-top: 35px;
 }
 
 
 
 
 
+.wbdv-genre-checkbox-left, .wbdv-genre-checkbox-right {
+  display: flex;
+  flex-direction: column;
+}
 
 
 
+.wbdv-forum-filter-btns {
+  display: flex;
+  margin-top: 30px;
+}
 
 
+.wbdv-home-forum-btn {
+  height: 50px;
+  width: 300px;
+}
 
+.wbdv-home-filter-btn {
+  height: 50px;
+  width: 300px;
+  margin-left: 35px;
+}
 
-
+.wbdv-home-movie-grid {
+  margin-top: 30px;
+}
 
 
 

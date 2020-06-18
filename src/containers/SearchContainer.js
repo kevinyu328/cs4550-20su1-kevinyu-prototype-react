@@ -24,7 +24,7 @@ export default class SearchContainer extends React.Component {
           <div className="wbdv-search-bar-button">
             <input type="text"
                    className="form-control"
-                   placeholder="Search For a Movie"
+                   placeholder="Search For a Movie Title"
                    value={this.state.search}
                    onChange={event => this.setState({search: event.target.value})}
                    onKeyPress={(event =>  {

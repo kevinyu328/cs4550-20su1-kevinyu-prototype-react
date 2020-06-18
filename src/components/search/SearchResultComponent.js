@@ -39,7 +39,7 @@ export default class SearchResultComponent extends React.Component {
               <div className='wbdv-search-field-and-btn'>
                 <input  className="wbdv-nav-search-field form-control mr-sm-2"
                         type="search"
-                        placeholder="Search For a Movie"
+                        placeholder="Search For a Movie Title"
                         aria-label="Search"
                         title="Search for a movie here"
                         value={this.state.query}

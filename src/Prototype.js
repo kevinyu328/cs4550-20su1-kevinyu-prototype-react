@@ -2,11 +2,14 @@ import React from "react";
 import SearchContainer from "./containers/SearchContainer";
 import { BrowserRouter, Route } from "react-router-dom";
 import MovieDetails from "./components/MovieDetails";
-import HomeComponent from "./components/home/HomeComponent"
+import HomeContainer from "./containers/HomeContainer"
 import LoginComponent from "./components/login/LoginComponent";
 import RegisterComponent from "./components/register/RegisterComponent";
 import SearchResultComponent from "./components/search/SearchResultComponent";
-import FilterSearchComponent from "./services/FilterSearchComponent";
+import FilterSearchComponent from "./components/search/FilterSearchComponent";
+import ProfileComponent from "./components/profile/ProfileComponent";
+import DiscussionForumComponent
+  from "./components/forum/DiscussionForumComponent";
 
 
 export default class Prototype extends React.Component {
@@ -17,7 +20,7 @@ export default class Prototype extends React.Component {
 
             <Route exact
                    path="/"
-                   component={HomeComponent}/>
+                   component={HomeContainer}/>
 
             <Route exact
                    path="/login"
@@ -32,7 +35,7 @@ export default class Prototype extends React.Component {
             {/*       component={SearchContainer}/>*/}
 
             <Route exact
-                   path="/search/filter"
+                   path="/filterSearch"
                    component={FilterSearchComponent}/>
 
 
@@ -41,8 +44,19 @@ export default class Prototype extends React.Component {
                    component={SearchResultComponent}/>
 
 
-             <Route path="/details/:imdbID"
+             <Route exact
+                    path="/details/:imdbID"
                     component={MovieDetails}/>
+
+
+            <Route exact
+                   path="/profile"
+                   component={ProfileComponent}/>
+
+
+            <Route exact
+                   path="/forums"
+                   component={DiscussionForumComponent}/>
 
 
           </div>

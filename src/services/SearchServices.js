@@ -8,12 +8,17 @@ const searchByImdbID = (id) =>
       .then(response => response.json())
 
 
+const getImdbIdByTitleYear = (title, year) =>
+    fetch(`http://www.omdbapi.com/?t=${title}&y=${year}&apikey=afe0ad21`)
+      .then(response => response.json())
+
 
 
 
 export default {
   searchByTitle,
-  searchByImdbID
+  searchByImdbID,
+  getImdbIdByTitleYear
 }
 
 

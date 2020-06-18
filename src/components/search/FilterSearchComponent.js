@@ -1,13 +1,15 @@
 import React from "react";
-import "./HomeComponent.style.client.css"
+// import SearchResultRowComponent from "./SearchResultRowComponent";
+import {searchByFilters} from "../../services/HomeServices"
 import {Link} from "react-router-dom";
-import SearchContainer from "../../containers/SearchContainer";
-import {getNewNetflixReleaseInUs, searchByFilters} from "../../services/HomeServices";
-import FilterSearchComponent from "../../services/FilterSearchComponent";
+// import "./Search.style.client.css"
+import SearchServices from "../../services/SearchServices";
+import FilterSearchResults from "./FilterSearchResults";
 
-class HomeComponent extends React.Component {
+
+export default class FilterSearchComponent extends React.Component {
   state = {
-    newNetflixReleaseInUS: [],
+    movieFromOmdb: '',
     netflixChecked: false,
     huluChecked: false,
     primeChecked: false,
@@ -23,12 +25,11 @@ class HomeComponent extends React.Component {
     filterSearchResults: [],
   }
 
+
   // componentDidMount() {
-  //   getNewNetflixReleaseInUs().then(movies => this.setState({newNetflixReleaseInUS: movies.ITEMS}))
+  //   SearchServices.getImdbIdByTitleYear(this.props.movie.Source.Title, this.props.movie.Source.Year)
+  //     .then(response => this.setState({movieFromOmdb: response}))
   // }
-
-
-
 
   populateSearch = () => {
     if(this.state.netflixChecked) {
@@ -83,25 +84,76 @@ class HomeComponent extends React.Component {
     }
     // console.log(this.state.providers)
     // console.log(this.state.genres)
+    this.search(this.state.providers, this.state.genres)
   }
 
 
   search = (providers, genres) =>
       searchByFilters(providers, genres)
-        .then(response => this.setState({filterSearchResults: response.Hits}))
+      .then(response => this.setState({filterSearchResults: response.Hits}))
+
+  // constructor(props) {
+  //   super(props);
+  //
+  //
+  //   SearchServices.getImdbIdByTitleYear(this.props.movie.Source.Title, this.props.movie.Source.Year)
+  //     .then(response =>
+  //             // console.log(response.imdbID)
+  //         this.state = {
+  //       hi: 'hi',
+  //       imdbId: response.imdbID
+  //   }
+  //   )
+  //
+  //   // this.state= {
+  //   //
+  //   // }
+  //
+  // }
 
 
-
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if(prevProps.movie !== this.props.movie) {
+      // console.log('hi')
+      // this.setState({movieFromOmdb: this.props.movies})
+      this.componentDidMount()
+    }
+  }
 
   render() {
     return (
-        <div className='container'>
-
+        <div className='wbdv-home-filter-search container'>
           <nav className="navbar fixed-top navbar-light bg-light">
 
-            <Link to={"/"} className="navbar-brand">
-              What Movie Should I Watch Next?
-            </Link>
+            <div className='wbdv-nav-brand-search-field'>
+              <Link to={"/"} className="navbar-brand">
+                What Movie Should I Watch Next?
+              </Link>
+
+
+              {/*<form className="form-inline">*/}
+              <div className='wbdv-search-field-and-btn'>
+                <input  className="wbdv-nav-search-field form-control mr-sm-2"
+                        type="search"
+                        placeholder="Search For a Movie Title"
+                        aria-label="Search"
+                        title="Search for a movie here"
+                        value={this.state.query}
+                        onChange={(event) => this.setState({
+                          query: event.target.value
+                        })}/>
+                <Link to={`/search/${this.state.query}`}>
+                  <button className="btn btn-danger my-2 my-sm-0"
+                          type="submit">
+                    Search
+                    {/*<i className="fa fa-plus"/>*/}
+                  </button>
+                </Link>
+
+              </div>
+            </div>
+
+            {/*</form>*/}
 
             <div>
               <ul className='navbar-nav wbdv-nav-login-signup'>
@@ -125,67 +177,50 @@ class HomeComponent extends React.Component {
             </div>
           </nav>
 
+          <h3>Search Through These Filters:</h3>
+
+          <div className='wbdv-provider-checkbox'>
+            <h5>Available Streaming Services: </h5>
+            <label htmlFor='netflix'>
+              Netflix
+              <input type='checkbox'
+                     name='provider'
+                     id='netflix'
+                     value='Netflix'
+                     onChange={event => {
+                       this.setState({netflixChecked: !this.state.netflixChecked})
+                       // this.setState(prevState => ({
+                       //   providers: [...prevState.providers, e.target.value]
+                       // }))
+                     }}/>
+            </label>
+            <label htmlFor='hulu'>
+              Hulu
+              <input type='checkbox'
+                     name='provider'
+                     id='hulu'
+                     value='Hulu'
+                     onChange={event => {
+                       this.setState({huluChecked: !this.state.huluChecked})}}/>
+            </label>
+            <label htmlFor='prime'>
+              Amazon Prime Video
+              <input type='checkbox'
+                     name='provider'
+                     id='prime'
+                     value='AmazonPrimeVideo'
+                     onChange={event => {
+                       this.setState({primeChecked: !this.state.primeChecked})}}/>
+            </label>
+          </div>
 
 
 
-          <div className='wbdv-home-content'>
-            <h1>
-              What Movie Should I Watch Next?
-            </h1>
+          <div className='wbdv-genre-checkbox'>
+            <h5>Genres:</h5>
+            <div className='row'>
 
-            <div className='wbdv-home-website-description'>
-              <p>
-                Having trouble choosing a movie to watch next?
-                Use this website to quickly discover a movie to watch based on the streaming services available to you.
-              </p>
-            </div>
-
-
-            <SearchContainer/>
-
-
-
-
-            <div className='wbdv-home-filter-search'>
-              <h2>Or search through these filters:</h2>
-
-              <div className='wbdv-provider-checkbox'>
-                <label htmlFor='netflix'>
-                  Netflix
-                  <input type='checkbox'
-                         name='provider'
-                         id='netflix'
-                         value='Netflix'
-                         onChange={event => {
-                           this.setState({netflixChecked: !this.state.netflixChecked})
-                           // this.setState(prevState => ({
-                           //   providers: [...prevState.providers, e.target.value]
-                           // }))
-                         }}/>
-                </label>
-                <label htmlFor='hulu'>
-                  Hulu
-                  <input type='checkbox'
-                         name='provider'
-                         id='hulu'
-                         value='Hulu'
-                         onChange={event => {
-                           this.setState({huluChecked: !this.state.huluChecked})}}/>
-                </label>
-                <label htmlFor='prime'>
-                  Amazon Prime Video
-                  <input type='checkbox'
-                         name='provider'
-                         id='prime'
-                         value='AmazonPrimeVideo'
-                         onChange={event => {
-                           this.setState({primeChecked: !this.state.primeChecked})}}/>
-                </label>
-              </div>
-
-
-
-              <div className='wbdv-genre-checkbox'>
+              <div className='col wbdv-genre-checkbox-left'>
                 <label htmlFor='action'>
                   Action
                   <input type='checkbox'
@@ -222,6 +257,12 @@ class HomeComponent extends React.Component {
                          onChange={event => {
                            this.setState({horror: !this.state.horror})}}/>
                 </label>
+              </div>
+
+
+
+
+              <div className='col wbdv-genre-checkbox-right'>
                 <label htmlFor='mystery'>
                   Mystery
                   <input type='checkbox'
@@ -250,67 +291,45 @@ class HomeComponent extends React.Component {
                            this.setState({romance: !this.state.romance})}}/>
                 </label>
               </div>
-
-
-
-
-
-              {/*<Link to={`/search/filter`}>*/}
-                <button className='btn btn-primary'
-                        onClick={() => {
-                          this.populateSearch()
-                          this.search(this.state.providers, this.state.genres)
-                          // console.log(this.state.filterSearchResults)
-                        }}>
-                  Submit
-                </button>
-              {/*</Link>*/}
-
-              <FilterSearchComponent movies={this.state.filterSearchResults}/>
-
-
-
-
-
-
-
             </div>
-
           </div>
 
-          {/*<div className='wbdv-home-popular-movies'>*/}
-          {/*  <h3>*/}
-          {/*    Popular movies & TV shows on Netflix:*/}
-          {/*  </h3>*/}
 
-          {/*  <div className="row">*/}
-          {/*  /!*{console.log(this.state.newNetflixReleaseInUS)}*!/*/}
-          {/*    {*/}
-          {/*      this.state.newNetflixReleaseInUS.map(movie =>*/}
-          {/*          <div className='mb-4 col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2'>*/}
-          {/*            <Link to={`/details/${movie.imdbid}`}>*/}
-          {/*              <img className="card-img-top"*/}
-          {/*                   src={movie.image}/>*/}
 
-          {/*              <div className="card-body">*/}
-          {/*                {movie.title}*/}
 
-          {/*              </div>*/}
-          {/*            </Link>*/}
 
-          {/*          </div>*/}
+          {/*<Link to={`/search/filter`}>*/}
+          <button className='btn btn-primary wbdv-submit-filter-btn'
+                  onClick={() => {
+                    this.populateSearch()
+                    // console.log(this.state.filterSearchResults)
+                  }}>
+            Submit
+          </button>
 
-          {/*      )*/}
-          {/*    }*/}
-          {/*  </div>*/}
-          {/*</div>*/}
+          <div className='row wbdv-filter-result-grid'>
+            {
+              this.state.filterSearchResults.map(movie =>
+
+                  <FilterSearchResults key={movie.Source.Id}
+                                       movie={movie}/>
+
+
+              )
+            }
+          </div>
+
+
+
+
+
+
+
+
 
 
         </div>
+
     )
   }
-
 }
-
-
-export default HomeComponent
