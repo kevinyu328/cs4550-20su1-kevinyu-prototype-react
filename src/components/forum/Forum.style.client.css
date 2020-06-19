@@ -1,0 +1,30 @@
+.wbdv-forum-container {
+  margin-top: 75px;
+}
+
+.wbdv-commented-by {
+  margin-left: auto;
+}
+
+
+.wbdv-comment {
+  display: flex;
+  flex-direction: column;
+}
+
+.wbdv-forum-list-container {
+  margin-top: 75px;
+}
+
+.wbdv-comment-delete-btn {
+  margin-left: 4px;
+}
+
+.wbdv-new-comment-fld {
+  margin-top: 25px;
+  margin-bottom: 8px;
+}
+
+.wbdv-comment-list-item {
+  margin-top: 5px;
+}

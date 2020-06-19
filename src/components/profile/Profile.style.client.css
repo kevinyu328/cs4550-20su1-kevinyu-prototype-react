@@ -23,3 +23,10 @@
 .wbdv-profile-container {
   margin-top: 75px;
 }
+
+
+.wbdv-favorite-movie-title-year {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

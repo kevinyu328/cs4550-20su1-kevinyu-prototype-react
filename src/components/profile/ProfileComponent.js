@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {checkLogin} from "../../services/UserServices";
 import {findFavoriteMoviesForUser} from "../../services/MovieServices";
 import SearchServices from "../../services/SearchServices";
+import FavoriteMovieComponent from "./FavoriteMovieComponent";
 
 export default class ProfileComponent extends React.Component {
   state = {
@@ -13,7 +14,7 @@ export default class ProfileComponent extends React.Component {
       password: '',
       email: '',
       phone: '',
-      favorites: [],
+      favoriteMovies: [],
       // sections: []
     },
     details: '',
@@ -30,13 +31,13 @@ export default class ProfileComponent extends React.Component {
     })
 
 
-    findFavoriteMoviesForUser(this.state.user.username)
-      .then(response => this.setState({
-        user: {
-          ...this.state.user,
-          favorites: response
-        }
-      }))
+    // findFavoriteMoviesForUser(this.state.user.username)
+    //   .then(response => this.setState({
+    //     user: {
+    //       ...this.state.user,
+    //       favorites: response
+    //     }
+    //   }))
 
 
 
@@ -125,35 +126,29 @@ export default class ProfileComponent extends React.Component {
 
               <div className='col-8 wbdv-profile-main-content'>
 
-                <div className='wbdv-profile-favorite-movies'>
-                  <span>
-                    Favorite Movies
-                  </span>
 
-                  {/*<ul>*/}
-                  {/*  {*/}
-                  {/*    this.state.user.favorites.map(movie =>*/}
-                  {/*    <li>*/}
-                  {/*      {*/}
-                  {/*        SearchServices.searchByImdbID(movie.id)*/}
-                  {/*          .then(details => this.setState({*/}
-                  {/*            details: details*/}
-                  {/*          }))*/}
-                  {/*      }*/}
-                  {/*      {this.state.details.Title}*/}
-                  {/*    </li>*/}
+                  <div className='wbdv-profile-favorite-movies'>
+                    <h3>Favorite Movies</h3>
 
-                  {/*    )*/}
-                  {/*  }*/}
-                  {/*</ul>*/}
+                  <div className='row'>
+                    {
+                      this.state.user && this.state.user.favoriteMovies.length > 0 &&
+                        this.state.user.favoriteMovies.map(movie =>
+                            <FavoriteMovieComponent key={movie.id}
+                                                    movie={movie}/>
+                        )
+                    }
+
+                  </div>
 
                 </div>
 
-                <div className='wbdv-profile-following'>
+
+                <div className='row wbdv-profile-following'>
                   Following
                 </div>
 
-                <div className='wbdv-profile-recent-comments'>
+                <div className='row wbdv-profile-recent-comments'>
                   Recent Comments
                 </div>
 

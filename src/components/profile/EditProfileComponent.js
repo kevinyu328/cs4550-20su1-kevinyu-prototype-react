@@ -223,20 +223,7 @@ export default class EditProfileComponent extends React.Component {
           </Link>
 
 
-          {/*{*/}
-          {/*  this.state.user && this.state.user.sections.length > 0 &&*/}
-          {/*  <div>*/}
-          {/*    <h3>Sections</h3>*/}
-          {/*    <ul className="list-group">*/}
-          {/*      {this.state.user.sections.map(section =>*/}
-          {/*          <li key={section.id}*/}
-          {/*              className="list-group-item">*/}
-          {/*            {section.title}*/}
-          {/*          </li>*/}
-          {/*      )}*/}
-          {/*    </ul>*/}
-          {/*  </div>*/}
-          {/*}*/}
+
 
 
 

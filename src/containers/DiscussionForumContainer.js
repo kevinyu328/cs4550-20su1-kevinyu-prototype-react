@@ -1,19 +1,22 @@
 import React from "react";
-import SearchServices from "../services/SearchServices"
-import "./MovieDetails.style.client.css"
+import "../components/forum/Forum.style.client.css"
+import {
+  createForum,
+  deleteForum,
+  getAllForums
+} from "../services/ForumServices";
+import {Link} from "react-router-dom";
 import {checkLogin} from "../services/UserServices";
-import {Link, Redirect} from "react-router-dom";
-import {addMovieToFavorites} from "../services/MovieServices";
 
-
-export default class MovieDetails extends React.Component {
+export default class DiscussionForumContainer extends React.Component {
   state = {
-    details: '',
-    user: null,
-    query: '',
+    forums: null,
   }
 
   componentDidMount() {
+    getAllForums()
+      .then(forums => this.setState({forums: forums}))
+
     checkLogin()
     .catch(e => '')
     .then(user => {
@@ -22,16 +25,24 @@ export default class MovieDetails extends React.Component {
           user: user
         })
     })
-
-    this.getMovieDetails(this.props.match.params.imdbID)
   }
 
-  getMovieDetails = (id) =>
-      SearchServices.searchByImdbID(id)
-        .then(details => this.setState({
-          details: details
-        }))
+  addForum = (forum) => {
+    createForum(forum)
+      .then(newForum => this.setState(prevState => ({
+        forums: [...prevState.forums, newForum]
+      })))
+  }
 
+
+  deleteForum = (forumToDelete) => {
+    deleteForum(forumToDelete.id)
+      .then(status => this.setState(prevState => ({
+        forums: prevState.forums.filter(forum =>
+            forum !== forumToDelete
+        )
+      })))
+  }
 
   logout = () => {
     fetch("http://localhost:8080/api/logout", {
@@ -42,22 +53,9 @@ export default class MovieDetails extends React.Component {
 
   }
 
-
-  addToFavorites = (movieId) => {
-    if(!this.state.user) {
-      alert('Please log in to add a movie to your favorites list')
-      this.props.history.push("/login")
-    } else {
-      addMovieToFavorites(this.state.user.username, {imdbId: this.state.details.imdbID})
-    }
-  }
-
-
-
-
   render() {
     return (
-        <div className='container wbdv-movie-details-container'>
+        <div className='container wbdv-forum-list-container'>
 
           {
             this.state.user &&
@@ -161,55 +159,41 @@ export default class MovieDetails extends React.Component {
             </nav>
           }
 
-          <h3>Movie Details</h3>
 
-          <div className='row justify-content-center'>
-            <h4 className='mb-4'>{this.state.details.Title + " (" + this.state.details.Year + ")"}</h4>
-          </div>
+          <h2>Discussion Forum</h2>
 
+          <div>
+            <ul className='list-group'>
 
-          <div className='row'>
-            <div className='col-4'>
-              <img className="wbdv-movie-poster"
-                   src={this.state.details.Poster}/>
-            </div>
+            {
+              // console.log(this.state.forums)
+              this.state.forums &&
+              this.state.forums.map(forum =>
+                    <li className='list-group-item'>
+                      <Link to={`/forums/${forum.id}`}>
+                        {forum.title}
+                      </Link>
 
-            <div className='col-8 details-container'>
-
-              <div className='wbdv-genre-runtime'>
-                <span>Genre: {this.state.details.Genre}</span>
-                <span>Runtime: {this.state.details.Runtime}</span>
-                <span>Director: {this.state.details.Director}</span>
-                <span>Actors: {this.state.details.Actors}</span>
-
-              </div>
-
-              <div className="wbdv-movie-ratings mt-3">
-                <ul className="list-group">
-                  {this.state.details !== '' ? (this.state.details.Ratings.map((item, index) => (
-                      <li key={item.Source}
-                          className='list-group-item'>{item.Source}: {item.Value}</li>
-                  ))) : ''}
-                </ul>
-              </div>
-
-              <div className='wbdv-movie-plot mt-4'>
-                <p>
-                  {this.state.details.Plot}
-                </p>
-              </div>
-
-              <button onClick={() => this.addToFavorites(this.props.match.params.imdbID)}
-                      className='btn btn-danger wbdv-details-add-to-fav-btn'>
-                Add to favorites
-              </button>
-
-            </div>
+                      <button className=''
+                              onClick={() => this.deleteForum(forum)}>Delete</button>
+                    </li>
 
 
+              )
+
+            }
+            </ul>
+
+            <button onClick={() => this.addForum({
+              title: "New Forum",
+              text: "Forum text here",
+            })}>
+              Add forum
+            </button>
           </div>
 
         </div>
+
     )
   }
 }

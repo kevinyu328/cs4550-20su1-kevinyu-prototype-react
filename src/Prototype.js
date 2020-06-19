@@ -8,10 +8,12 @@ import RegisterComponent from "./components/register/RegisterComponent";
 import SearchResultComponent from "./components/search/SearchResultComponent";
 import FilterSearchComponent from "./components/search/FilterSearchComponent";
 import ProfileComponent from "./components/profile/ProfileComponent";
-import DiscussionForumComponent
-  from "./components/forum/DiscussionForumComponent";
+import DiscussionForumContainer
+  from "./containers/DiscussionForumContainer";
 import EditProfileComponent from "./components/profile/EditProfileComponent";
 import AnonProfileComponent from "./components/profile/AnonProfileComponent";
+import DiscussionForumComponent
+  from "./components/forum/DiscussionForumComponent";
 
 
 export default class Prototype extends React.Component {
@@ -66,7 +68,13 @@ export default class Prototype extends React.Component {
 
             <Route exact
                    path="/forums"
+                   component={DiscussionForumContainer}/>
+
+
+            <Route exact
+                   path="/forums/:forumId"
                    component={DiscussionForumComponent}/>
+
 
 
           </div>
