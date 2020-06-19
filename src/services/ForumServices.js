@@ -25,4 +25,14 @@ export const deleteForum = (forumId) =>
       .then(response => response.json())
 
 
+export const updateForum = (forumId, updatedForum) =>
+    fetch(`http://localhost:8080/api/forums/${forumId}`, {
+      method: "PUT",
+      body: JSON.stringify(updatedForum),
+      headers: {"content-type": "application/json"}
+    })
+      .then(response => response.json())
+
+
+
 

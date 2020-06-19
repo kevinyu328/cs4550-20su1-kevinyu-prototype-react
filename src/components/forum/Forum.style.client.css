@@ -28,3 +28,46 @@
 .wbdv-comment-list-item {
   margin-top: 5px;
 }
+
+.wbdv-forum-delete-ok-btn {
+  margin-left: auto;
+}
+
+.wbdv-forum-list-title-delete-btn {
+  display: flex;
+  align-items: center;
+}
+
+.wbdv-forum-edit-btn {
+  margin-left: auto;
+}
+
+.wbdv-forum-ok-btn {
+  margin-left: 3px;
+}
+
+.wbdv-forum-add-btn {
+  margin-top: 15px;
+}
+
+
+.wbdv-forum-title-edit-btn {
+  display: flex;
+}
+
+.wbdv-forum-edit-title {
+  margin-bottom: 7px;
+  height: 50px;
+}
+
+.wbdv-forum-inside-edit-btn {
+  margin-left: auto;
+}
+
+.wbdv-forum-edit-fields {
+  margin-bottom: 50px;
+}
+
+.wbdv-forum-inside-ok-btn {
+  margin-top: 7px;
+}

@@ -3,7 +3,7 @@ import "../components/forum/Forum.style.client.css"
 import {
   createForum,
   deleteForum,
-  getAllForums
+  getAllForums, updateForum
 } from "../services/ForumServices";
 import {Link} from "react-router-dom";
 import {checkLogin} from "../services/UserServices";
@@ -11,6 +11,9 @@ import {checkLogin} from "../services/UserServices";
 export default class DiscussionForumContainer extends React.Component {
   state = {
     forums: null,
+    editingForum: '',
+    editingTitle: '',
+    user: null,
   }
 
   componentDidMount() {
@@ -43,6 +46,15 @@ export default class DiscussionForumContainer extends React.Component {
         )
       })))
   }
+
+
+  updateForum = (forumId, updatedForum) => {
+    updateForum(forumId, updatedForum)
+      .then(status =>
+      getAllForums().then(forums => this.setState({forums: forums}))
+      )
+  }
+
 
   logout = () => {
     fetch("http://localhost:8080/api/logout", {
@@ -170,12 +182,65 @@ export default class DiscussionForumContainer extends React.Component {
               this.state.forums &&
               this.state.forums.map(forum =>
                     <li className='list-group-item'>
-                      <Link to={`/forums/${forum.id}`}>
-                        {forum.title}
-                      </Link>
+                      <div className='wbdv-forum-list-title-delete-btn'>
 
-                      <button className=''
-                              onClick={() => this.deleteForum(forum)}>Delete</button>
+                        {
+                          this.state.editingForum.id === forum.id &&
+                            <input value={this.state.editingTitle}
+                                 className=''
+                                 onChange={(event) => this.setState({editingTitle: event.target.value})}/>
+                        }
+                        {
+                          this.state.editingForum.id !== forum.id &&
+                            <Link to={`/forums/${forum.id}`}>
+                              {forum.title}
+                            </Link>
+                        }
+
+
+
+
+
+
+                        {
+                          !this.state.editingForum && this.state.user && this.state.user.role === "admin" &&
+                            <button className='wbdv-forum-edit-btn btn btn-outline-dark'
+                                    onClick={() => {
+                              this.setState({editingForum: forum, editingTitle: forum.title})
+                            }}>
+                              Edit
+                            </button>
+                        }
+
+                        {
+                          this.state.editingForum &&
+                            <div className='wbdv-forum-delete-ok-btn'>
+
+                              <button className='wbdv-forum-list-delete-btn btn btn-danger'
+                                      onClick={() => this.deleteForum(forum)}>
+                                Delete
+                              </button>
+
+
+                              <button className='wbdv-forum-ok-btn btn btn-success'
+                                      onClick={() => {
+                                this.setState({editingForum: ''})
+                                this.updateForum(forum.id, {
+                                  ...forum,
+                                  title: this.state.editingTitle
+                                })
+                              }}>
+                                Ok
+                              </button>
+
+
+                            </div>
+                        }
+
+
+
+                      </div>
+
                     </li>
 
 
@@ -184,12 +249,17 @@ export default class DiscussionForumContainer extends React.Component {
             }
             </ul>
 
-            <button onClick={() => this.addForum({
-              title: "New Forum",
-              text: "Forum text here",
-            })}>
-              Add forum
-            </button>
+            {
+              this.state.user !== null && this.state.user.role === "admin" &&
+                <button className='btn btn-primary wbdv-forum-add-btn'
+                        onClick={() => this.addForum({
+                          title: "New Forum",
+                          text: "Forum text here",
+                        })}>
+                  Add forum
+                </button>
+            }
+
           </div>
 
         </div>

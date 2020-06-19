@@ -1,5 +1,5 @@
 import React from "react";
-import {getForumById} from "../../services/ForumServices";
+import {getForumById, updateForum} from "../../services/ForumServices";
 import {Link} from "react-router-dom";
 import {checkLogin} from "../../services/UserServices";
 import {addMovieToFavorites} from "../../services/MovieServices";
@@ -20,6 +20,9 @@ export default class DiscussionForumComponent extends React.Component {
     commentDeleted: false,
     editingComment: '',
     editingText: '',
+    forumText: '',
+    forumTitle: '',
+    editingForumText: false,
   }
 
 
@@ -102,6 +105,14 @@ export default class DiscussionForumComponent extends React.Component {
               comments: comments
             }))
       )
+  }
+
+
+  updateForumText = (forumId, updatedForum) => {
+    updateForum(forumId, updatedForum)
+      .then(status =>
+          getForumById(this.props.match.params.forumId)
+          .then(forum => this.setState({forum: forum})))
   }
 
 
@@ -211,11 +222,80 @@ export default class DiscussionForumComponent extends React.Component {
             </nav>
           }
 
-          <h2>{this.state.forum.title}</h2>
+          <div className='wbdv-forum-edit-fields'>
 
-          <p>
-            {this.state.forum.text}
-          </p>
+          <div className='wbdv-forum-title-edit-btn'>
+
+            {
+              !this.state.editingForumText &&
+                 <h2>{this.state.forum.title}</h2>
+            }
+            {
+              this.state.editingForumText &&
+                <input className='form-control wbdv-forum-edit-title'
+                       value={this.state.forumTitle}
+                       onChange={event => this.setState({forumTitle: event.target.value})}/>
+            }
+
+
+
+            {
+              !this.state.editingForumText && this.state.user && this.state.user.role === "admin" &&
+              <button className='wbdv-forum-inside-edit-btn btn btn-outline-dark'
+                      onClick={() => this.setState({
+                editingForumText: true,
+                forumText: this.state.forum.text,
+                forumTitle: this.state.forum.title})}>
+                Edit
+              </button>
+
+            }
+          </div>
+
+
+          {
+            !this.state.editingForumText &&
+              <p>
+                {this.state.forum.text}
+              </p>
+          }
+
+          {
+            this.state.editingForumText &&
+                <div>
+
+                  <textarea value={this.state.forumText}
+                            onChange={event => this.setState({forumText: event.target.value})}
+                            className='form-control'
+                            name='forum-text'
+                            rows='10'>
+                  </textarea>
+                  
+
+                  <button className='float-right wbdv-forum-inside-ok-btn btn btn-success'
+                          onClick={() => {
+                    this.setState({editingForumText: false})
+                    this.updateForumText(this.state.forum.id, {
+                      ...this.state.forum,
+                      text: this.state.forumText,
+                      title: this.state.forumTitle
+                    })
+                  }}>
+                    Ok
+                  </button>
+
+
+                </div>
+          }
+
+
+        </div>
+
+
+
+
+
+
 
           {/*{console.log(this.state.forum.comments)}*/}
 
