@@ -5,6 +5,7 @@ export default class RegisterComponent extends React.Component {
   state = {
     username: '',
     password: '',
+    role: 'user',
     email: '',
     phone: '',
     error: null
@@ -17,6 +18,7 @@ export default class RegisterComponent extends React.Component {
         body: JSON.stringify({
           username: this.state.username,
           password: this.state.password,
+          role: this.state.role,
           email: this.state.email,
           phone: this.state.phone,
         }),
@@ -84,6 +86,19 @@ export default class RegisterComponent extends React.Component {
                      className="wbdv-field wbdv-password form-control"
                      onChange={(e) => this.setState({password: e.target.value})}
               />
+            </div>
+          </div>
+
+
+          <div className="form-group row">
+            <label htmlFor="role" className="col-sm-2 col-form-label">Role</label>
+            <div className="col-sm-10">
+              <select onChange={(event) => this.setState({role: event.target.value})}
+                      id="role"
+                      className="wbdv-field wbdv-role form-control">
+                <option value="user">Normal user</option>
+                <option value="admin">Admin</option>
+              </select>
             </div>
           </div>
 

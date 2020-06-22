@@ -2,6 +2,7 @@ import React from "react";
 import "./Profile.style.client.css"
 import {Link} from "react-router-dom";
 import {checkLogin, getUserByUsername} from "../../services/UserServices";
+import FavoriteMovieComponent from "./FavoriteMovieComponent";
 
 export default class AnonProfileComponent extends React.Component {
   state = {
@@ -179,7 +180,18 @@ export default class AnonProfileComponent extends React.Component {
               <div className='col-8 wbdv-profile-main-content'>
 
                 <div className='wbdv-profile-favorite-movies'>
-                  Favorite Movies
+                  <h3>Favorite Movies</h3>
+
+                  <div className='row'>
+                    {
+                      this.state.profileUser && this.state.profileUser.favoriteMovies &&
+                      this.state.profileUser.favoriteMovies.map(movie =>
+                          <FavoriteMovieComponent key={movie.id}
+                                                  movie={movie}/>
+                      )
+                    }
+
+                  </div>
                 </div>
 
                 <div className='wbdv-profile-following'>

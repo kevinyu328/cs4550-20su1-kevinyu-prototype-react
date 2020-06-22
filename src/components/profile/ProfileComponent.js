@@ -1,7 +1,7 @@
 import React from "react";
 import "./Profile.style.client.css"
 import {Link} from "react-router-dom";
-import {checkLogin} from "../../services/UserServices";
+import {checkLogin, getUserByUsername} from "../../services/UserServices";
 import {findFavoriteMoviesForUser} from "../../services/MovieServices";
 import SearchServices from "../../services/SearchServices";
 import FavoriteMovieComponent from "./FavoriteMovieComponent";
@@ -14,9 +14,11 @@ export default class ProfileComponent extends React.Component {
       password: '',
       email: '',
       phone: '',
-      favoriteMovies: [],
+      // favoriteMovies: [],
       // sections: []
     },
+    favoriteMovies: '',
+    profileUser: '',
     details: '',
   }
 
@@ -33,16 +35,10 @@ export default class ProfileComponent extends React.Component {
 
     // findFavoriteMoviesForUser(this.state.user.username)
     //   .then(response => this.setState({
-    //     user: {
-    //       ...this.state.user,
-    //       favorites: response
-    //     }
-    //   }))
-
-
-
-
+    //     favoriteMovies: response
+    //  }))
   }
+
 
   logout = () => {
     fetch("http://localhost:8080/api/logout", {
@@ -53,6 +49,15 @@ export default class ProfileComponent extends React.Component {
 
   }
 
+
+  getUserByUsername = (username) => {
+    getUserByUsername(username)
+    .then(response => this.setState({
+      profileUser: response
+    }))
+
+
+  }
   render() {
     return (
         <div className='container wbdv-profile-container'>
@@ -116,7 +121,7 @@ export default class ProfileComponent extends React.Component {
                   </ul>
 
                   <Link to={'/profileEdit'}>
-                    <button>Edit Info</button>
+                    <button className='btn btn-primary'>Edit Info</button>
                   </Link>
 
                 </div>
@@ -131,8 +136,10 @@ export default class ProfileComponent extends React.Component {
                     <h3>Favorite Movies</h3>
 
                   <div className='row'>
+                    {/*{this.getUserByUsername(this.state.user.username)}*/}
+                    {/*{console.log(this.state.profileUser)}*/}
                     {
-                      this.state.user && this.state.user.favoriteMovies.length > 0 &&
+                      this.state.user && this.state.user.favoriteMovies &&
                         this.state.user.favoriteMovies.map(movie =>
                             <FavoriteMovieComponent key={movie.id}
                                                     movie={movie}/>

@@ -8,6 +8,7 @@ export default class EditProfileComponent extends React.Component {
     user: {
       username: '',
       password: '',
+      role: '',
       email: '',
       phone: '',
       // sections: []
@@ -43,7 +44,10 @@ export default class EditProfileComponent extends React.Component {
       .then(user => this.setState({
         user: {
           username: user.username,
-          password: user.password
+          password: user.password,
+          role: user.role,
+          email: user.email,
+          phone: user.phone
         },
         updated: true,
       }))
@@ -172,6 +176,25 @@ export default class EditProfileComponent extends React.Component {
 
 
           <div className="form-group row">
+            <label htmlFor="role" className="col-sm-1 col-form-label">Role</label>
+            <div className="col-sm-11">
+              <select onChange={(event) => this.setState({
+                user: {
+                  ...this.state.user,
+                  role: event.target.value
+                }})}
+                      value={this.state.user.role}
+                      id="role"
+                      className="wbdv-field wbdv-role form-control">
+                <option value="user">Normal user</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+          </div>
+
+
+
+          <div className="form-group row">
             <label htmlFor="email"
                    className="col-sm-1 col-form-label">Email</label>
             <div className="col-sm-11">
@@ -186,6 +209,8 @@ export default class EditProfileComponent extends React.Component {
                          email: e.target.value}})}/>
             </div>
           </div>
+
+
 
 
           <div className="form-group row">
