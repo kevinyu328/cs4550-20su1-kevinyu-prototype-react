@@ -14,7 +14,7 @@ export default class RegisterComponent extends React.Component {
 
   register = () => {
     if (this.state.username !== '' && this.state.password !== '') {
-      fetch("http://localhost:8080/api/register", {
+      fetch("https://cs4550-20su1-proto-server.herokuapp.com/api/register", {
         body: JSON.stringify({
           username: this.state.username,
           password: this.state.password,

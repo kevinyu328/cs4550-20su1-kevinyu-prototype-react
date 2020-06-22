@@ -33,7 +33,7 @@ class HomeContainer extends React.Component {
 
 
   logout = () => {
-    fetch("http://localhost:8080/api/logout", {
+    fetch("https://cs4550-20su1-proto-server.herokuapp.com/api/logout", {
       method: 'POST',
       credentials: "include"
     })

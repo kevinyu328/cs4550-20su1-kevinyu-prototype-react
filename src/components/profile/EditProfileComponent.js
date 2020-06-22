@@ -32,7 +32,7 @@ export default class EditProfileComponent extends React.Component {
   update = () => {
     if (this.state.user.username !== '' && this.state.user.password !== '') {
 
-      fetch("http://localhost:8080/api/profile/update", {
+      fetch("https://cs4550-20su1-proto-server.herokuapp.com/api/profile/update", {
         body: JSON.stringify(this.state.user),
         headers: {
           'content-type': 'application/json'
@@ -63,7 +63,7 @@ export default class EditProfileComponent extends React.Component {
 
 
   logout = () => {
-    fetch("http://localhost:8080/api/logout", {
+    fetch("https://cs4550-20su1-proto-server.herokuapp.com/api/logout", {
       method: 'POST',
       credentials: "include"
     })

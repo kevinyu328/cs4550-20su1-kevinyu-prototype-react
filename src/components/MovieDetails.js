@@ -11,6 +11,7 @@ export default class MovieDetails extends React.Component {
     details: '',
     user: null,
     query: '',
+    success: null,
   }
 
   componentDidMount() {
@@ -34,7 +35,7 @@ export default class MovieDetails extends React.Component {
 
 
   logout = () => {
-    fetch("http://localhost:8080/api/logout", {
+    fetch("https://cs4550-20su1-proto-server.herokuapp.com/api/logout", {
       method: 'POST',
       credentials: "include"
     })
@@ -49,6 +50,9 @@ export default class MovieDetails extends React.Component {
       this.props.history.push("/login")
     } else {
       addMovieToFavorites(this.state.user.username, {imdbId: this.state.details.imdbID})
+      this.setState({
+        success: `${this.state.details.Title} successfully added to favorites list`
+      })
     }
   }
 
@@ -162,6 +166,13 @@ export default class MovieDetails extends React.Component {
           }
 
           <h3>Movie Details</h3>
+
+          {
+            this.state.success &&
+            <div className="alert alert-success">
+              {this.state.success}
+            </div>
+          }
 
           <div className='row justify-content-center'>
             <h4 className='mb-4'>{this.state.details.Title + " (" + this.state.details.Year + ")"}</h4>

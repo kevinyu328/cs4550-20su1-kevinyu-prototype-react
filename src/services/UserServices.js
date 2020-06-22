@@ -1,5 +1,5 @@
 export const checkLogin = () =>
-    fetch("http://localhost:8080/api/profile", {
+    fetch("https://cs4550-20su1-proto-server.herokuapp.com/api/profile", {
       method: 'POST',
       credentials: "include"
     })
@@ -8,5 +8,5 @@ export const checkLogin = () =>
 
 
 export const getUserByUsername = (username) =>
-    fetch(`http://localhost:8080/api/users/${username}`)
+    fetch(`https://cs4550-20su1-proto-server.herokuapp.com/api/users/${username}`)
       .then(response => response.json())
