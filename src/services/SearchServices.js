@@ -9,7 +9,7 @@ const searchByImdbID = (id) =>
 
 
 const getImdbIdByTitleYear = (title, year) =>
-    fetch(`http://www.omdbapi.com/?t=${title}&y=${year}&apikey=afe0ad21`)
+    fetch(`https://www.omdbapi.com/?t=${title}&y=${year}&apikey=afe0ad21`)
       .then(response => response.json())
 
 
